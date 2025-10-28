@@ -13,7 +13,7 @@ function playGame()
 
   function getComputerChoice()
   {
-
+    return Choice[(Math.floor(Math.random() * (Choice.length - 1)))] // -1 so that computer cannot pick trans rights
   }
 
   function getPlayerChoice()
