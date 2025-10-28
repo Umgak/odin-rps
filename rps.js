@@ -32,16 +32,13 @@ function playGame()
     let runOnce = false;
     do {
       playerInput = prompt(query);
-      if (playerInput !== null) // player canceled - otherwise toLowerCase fails.
+      if (playerInput === null) continue; // guard clause against player clicking cancel
+      playerInput = playerInput.toLowerCase();
+      playerChoice = Choice.find(obj => obj.name === playerInput) // attempt to lookup 
+      if (playerChoice === undefined && !runOnce) // failed to look up
       {
-        // hate multi-nesting like this. can I switch this to a guard clause somehow? look into it later
-        playerInput = playerInput.toLowerCase();
-        playerChoice = Choice.find(obj => obj.name === playerInput) // attempt to lookup 
-        if (playerChoice === undefined && !runOnce) // failed to look up
-        {
-          query = `Unable to understand player choice: ${playerInput}. Please try again.\n\n${query}`;
-          runOnce = true; // don't modify the text multiple times
-        }
+        query = `Unable to understand player choice: ${playerInput}. Please try again.\n\n${query}`;
+        runOnce = true; // don't modify the text multiple times
       }
 
     } while (playerChoice === undefined)
