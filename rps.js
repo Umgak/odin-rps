@@ -18,7 +18,8 @@ function playGame()
 
   function getPlayerChoice()
   {
-
+    let playerChoice = prompt("Enter rock, paper, or scissors.").toLowerCase();
+    return Choice.find(obj => obj.name === playerChoice)
   }
 
   function playRound() {
