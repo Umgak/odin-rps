@@ -38,12 +38,11 @@ function playGame()
 
   function getPlayerChoice()
   {
-    let playerInput = undefined;
     let playerChoice = undefined;
     let query = "Enter rock, paper, or scissors."
     let runOnce = false;
     do {
-      playerInput = prompt(query);
+      let playerInput = prompt(query);
       if (playerInput === null) 
       {
         return false; // let them out
@@ -87,7 +86,7 @@ function playGame()
      no. */
   {
     let playerChoice = getPlayerChoice();
-    if (playerChoice = false)
+    if (playerChoice === false)
     {
       return false;
     }
