@@ -6,11 +6,11 @@ function playGame()
   const Choice = [
     /* lets me add extra options easily - in case this becomes rock-paper-scissors-lizard-spock tomorrow
        I know that you don't expect me to know array or object yet. I do. Sorrgy :3 */
-    { name: "rock", beats: ["scissors"]},
-    { name: "paper", beats: ["rock"]},
-    { name: "scissors", beats: ["paper"]},
+    { name: "rock", friendlyName: "Rock", flavorText: "smashes", beats: ["scissors"]},
+    { name: "paper", friendlyName: "Paper", flavorText: "covers", beats: ["rock"]},
+    { name: "scissors", friendlyName: "Scissors", flavorText: "chops up", beats: ["paper"]},
     // secret option
-    { name: "trans rights", beats: ["rock", "paper", "scissors"]}
+    { name: "trans rights", friendlyName: "Trans Rights", beats: ["rock", "paper", "scissors"]}
   ];
 
   function disableTransRightsEE()
@@ -82,5 +82,29 @@ function playGame()
     let scoreDelta = determineVictor(playerChoice, computerChoice);
     playerScore += scoreDelta[0];    // avoids using big if-else blocks for playRound (they're in determineVictor instead)
     computerScore += scoreDelta[1]; // this is actually faster than using a loop, w/e
+
+    let message = `You threw: ${playerChoice.friendlyName}\nI threw: ${computerChoice.friendlyName}\n`;
+    if (scoreDelta == RoundState.NO_VICTOR)
+    {
+      message += "It's a tie!\n";
+    }
+    else if (playerChoice.name === "trans rights") // gotta handle the two states of trans rights in here
+    {
+      if (scoreDelta == RoundState.PLAYER_VICTOR)
+      {
+        message += "Hey, that's not one of the options! But it is true...\nI'll give you this round, but I won't be so gentle in the future.\n";
+      }
+      else
+      {
+        message += "I told you I wouldn't be so gentle in the future.\nI'm taking this round!\n";
+      }
+    }
+    else
+    {
+      message += ((scoreDelta == RoundState.PLAYER_VICTOR) ? `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!\nYou win this round!\n` : `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!\nI win this round!\n`)
+    }
+    message += `\nPlayer score: ${playerScore}\nComputer score: ${computerScore}`
+    console.log(message);
+    alert(message);
   }
 }
