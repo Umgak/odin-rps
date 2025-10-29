@@ -125,7 +125,7 @@ function playGame()
 
   for (let i = 0; i < MAX_ROUNDS; i++)
   {
-    if(playRound() == false)
+    if(playRound() === false)
     {
       console.error("Player clicked cancel. Halting.")
       return;
