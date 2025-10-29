@@ -16,7 +16,7 @@ function playGame()
   function disableTransRightsEE()
   /* only let you use the trans rights easter egg once per game */
   {
-    for (let i = 0; i < (Choice.length - 2); ++i) {
+    for (let i = 0; i < (Choice.length - 1); ++i) {
       Choice[i].beats.push("trans rights");
     }
     Choice[Choice.length - 1].beats.length = 0;
