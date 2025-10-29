@@ -136,3 +136,8 @@ function playGame()
   console.log(message);
   alert(message);
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const playButton = document.getElementById('playButton');
+  playButton.addEventListener('click', playGame);
+})
