@@ -73,6 +73,12 @@ function playGame()
     return RoundState.NO_VICTOR;
   }
 
+  function appendScores(message)
+  {
+    message += `\nPlayer score: ${playerScore}\nComputer score: ${computerScore}`
+    return message;
+  }
+
   function playRound()
   /* according to the instructions, I'm supposed to get the player choices outside of this function.
      no. */
@@ -103,8 +109,30 @@ function playGame()
     {
       message += ((scoreDelta == RoundState.PLAYER_VICTOR) ? `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!\nYou win this round!\n` : `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!\nI win this round!\n`)
     }
-    message += `\nPlayer score: ${playerScore}\nComputer score: ${computerScore}`
+    message = appendScores(message)
     console.log(message);
     alert(message);
   }
+
+
+  for (let i = 0; i < MAX_ROUNDS; i++)
+  {
+    playRound();
+  }
+  let message = `GAME OVER`;
+  message = `${appendScores(message)}\n`;
+  if (playerScore === computerScore)
+  {
+    message += "It's a tie! Good game!";
+  }
+  if (playerScore > computerScore)
+  {
+    message += "You win! Bravo!";
+  }
+  if (playerScore < computerScore)
+  {
+    message += "I win! Good showing.";
+  }
+  console.log(message);
+  alert(message);
 }
