@@ -2,8 +2,7 @@
 function playGame()
 {
   const MAX_ROUNDS = 5;
-  let humanScore = 0, computerScore = 0;
-  let usedTransRights = false;
+  let playerScore = 0, computerScore = 0;
   const Choice = [
     /* lets me add extra options easily - in case this becomes rock-paper-scissors-lizard-spock tomorrow
        I know that you don't expect me to know array or object yet. I do. Sorrgy :3 */
@@ -81,7 +80,7 @@ function playGame()
     let playerChoice = getPlayerChoice();
     let computerChoice = getComputerChoice();
     let scoreDelta = determineVictor(playerChoice, computerChoice);
-    humanScore += scoreDelta[0];    // avoids using big if-else blocks for playRound (they're in determineVictor instead)
+    playerScore += scoreDelta[0];    // avoids using big if-else blocks for playRound (they're in determineVictor instead)
     computerScore += scoreDelta[1]; // this is actually faster than using a loop, w/e
   }
 }
