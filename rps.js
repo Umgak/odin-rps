@@ -44,7 +44,10 @@ function playGame()
     let runOnce = false;
     do {
       playerInput = prompt(query);
-      if (playerInput === null) continue; // guard clause against player clicking cancel
+      if (playerInput === null) 
+      {
+        return false; // let them out
+      }; // guard clause against player clicking cancel
       playerInput = playerInput.toLowerCase();
       playerChoice = Choice.find(obj => obj.name === playerInput) // attempt to lookup 
       if (playerChoice === undefined && !runOnce) // failed to look up
@@ -84,6 +87,10 @@ function playGame()
      no. */
   {
     let playerChoice = getPlayerChoice();
+    if (playerChoice = false)
+    {
+      return false;
+    }
     let computerChoice = getComputerChoice();
     let scoreDelta = determineVictor(playerChoice, computerChoice);
     playerScore += scoreDelta[0];    // avoids using big if-else blocks for playRound (they're in determineVictor instead)
@@ -119,7 +126,11 @@ function playGame()
 
   for (let i = 0; i < MAX_ROUNDS; i++)
   {
-    playRound();
+    if(playRound() == false)
+    {
+      console.error("Player clicked cancel. Halting.")
+      return;
+    };
   }
   let message = `GAME OVER`;
   message = `${appendScores(message)}\n`;
