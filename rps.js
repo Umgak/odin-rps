@@ -107,7 +107,9 @@ function playGame()
     }
     else
     {
-      message += ((scoreDelta == RoundState.PLAYER_VICTOR) ? `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!\nYou win this round!\n` : `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!\nI win this round!\n`)
+      message += ((scoreDelta == RoundState.PLAYER_VICTOR) ? 
+        `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!\nYou win this round!\n` : 
+        `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!\nI win this round!\n`)
     }
     message = appendScores(message)
     console.log(message);
