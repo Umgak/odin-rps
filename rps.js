@@ -96,13 +96,13 @@ function playGame()
     computerScore += scoreDelta[1]; // this is actually faster than using a loop, w/e
 
     let message = `You threw: ${playerChoice.friendlyName}\nI threw: ${computerChoice.friendlyName}\n`;
-    if (scoreDelta == RoundState.NO_VICTOR)
+    if (scoreDelta === RoundState.NO_VICTOR)
     {
       message += "It's a tie!\n";
     }
     else if (playerChoice.name === "trans rights") // gotta handle the two states of trans rights in here
     {
-      if (scoreDelta == RoundState.PLAYER_VICTOR)
+      if (scoreDelta === RoundState.PLAYER_VICTOR)
       {
         message += "Hey, that's not one of the options! But it is true...\nI'll give you this round, but I won't be so gentle in the future.\n";
       }
@@ -113,7 +113,7 @@ function playGame()
     }
     else
     {
-      message += ((scoreDelta == RoundState.PLAYER_VICTOR) ? 
+      message += ((scoreDelta === RoundState.PLAYER_VICTOR) ? 
         `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!\nYou win this round!\n` : 
         `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!\nI win this round!\n`)
     }
