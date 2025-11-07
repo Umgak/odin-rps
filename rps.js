@@ -121,30 +121,4 @@ function playGame()
     console.log(message);
     alert(message);
   }
-
-
-  for (let i = 0; i < MAX_ROUNDS; i++)
-  {
-    if(playRound() === false)
-    {
-      console.error("Player clicked cancel. Halting.")
-      return;
-    };
-  }
-  let message = `GAME OVER`;
-  message = `${appendScores(message)}\n`;
-  if (playerScore === computerScore)
-  {
-    message += "It's a tie! Good game!";
-  }
-  if (playerScore > computerScore)
-  {
-    message += "You win! Bravo!";
-  }
-  if (playerScore < computerScore)
-  {
-    message += "I win! Good showing.";
-  }
-  console.log(message);
-  alert(message);
 }
