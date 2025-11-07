@@ -5,14 +5,3 @@ body {
   min-height: 100dvh;
   align-items: center;
 }
-
-#playButton {
-  width: fit-content;
-  background-color: #3882F6;
-  color: white;
-  padding: 8px 30px;
-  border-radius: 8px;
-  border: none;
-  font-size: 16px;
-  font-weight: 700;
-}
