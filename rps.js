@@ -1,25 +1,55 @@
 "use strict;"
+/* Author's note:
+  If you're following along the Odin Project, and you stumbled into this code
+  DO NOT USE IT AS A BENCHMARK.
+  You are not supposed to know what the hell a "class" is, or how to use a constructor()
+  I already DID know, because I've used C++ before.
+
+  Learn at your own pace.
+*/
 function playGame()
 {
-  const MAX_ROUNDS = 5;
+  const Choices = []
+  class Choice {
+    constructor(id, icon, friendlyName, flavorText, beats, createIcon = true) {
+      this.id = id;
+      this.icon = icon;
+      this.friendlyName = friendlyName;
+      this.flavorText = flavorText;
+      this.beats = beats;
+      if (createIcon) {
+        const clickableContainer = document.querySelector("#clickable-container");
+        let div_outer = document.createElement("div");
+        let div_inner = document.createElement("div");
+        div_outer.className = "clickable";
+        div_inner.id = this.id;
+        div_inner.className = "card";
+        div_inner.textContent = this.icon;
+
+        div_outer.appendChild(div_inner);
+        clickableContainer.appendChild(div_outer);
+      }
+      let clickableTarget = document.querySelector(`#${this.id}`);
+      clickableTarget.addEventListener('click', getPlayerChoice);
+      Choices.push(this);
+    }
+  }
+
+  new Choice("rock", "🪨", "Rock", "smashes", ["scissors"]);
+  new Choice("paper", "📄", "Paper", "covers", ["rock"]);
+  new Choice("scissors", "✂️", "Scissors", "chop up", ["paper"]);
+  // secret option
+  new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "", ["rock, paper, scissors"], false);
+
   let playerScore = 0, computerScore = 0;
-  const Choice = [
-    /* lets me add extra options easily - in case this becomes rock-paper-scissors-lizard-spock tomorrow
-       I know that you don't expect me to know array or object yet. I do. Sorrgy :3 */
-    { name: "rock", friendlyName: "Rock", flavorText: "smashes", beats: ["scissors"]},
-    { name: "paper", friendlyName: "Paper", flavorText: "covers", beats: ["rock"]},
-    { name: "scissors", friendlyName: "Scissors", flavorText: "chops up", beats: ["paper"]},
-    // secret option
-    { name: "trans rights", friendlyName: "Trans Rights", beats: ["rock", "paper", "scissors"]}
-  ];
 
   function disableTransRightsEE()
   /* only let you use the trans rights easter egg once per game */
   {
-    for (let i = 0; i < (Choice.length - 1); ++i) {
-      Choice[i].beats.push("trans rights");
+    for (let i = 0; i < (Choices.length - 1); ++i) {
+      Choices[i].beats.push("trans rights");
     }
-    Choice[Choice.length - 1].beats.length = 0;
+    Choices[Choices.length - 1].beats.length = 0;
     return;
   }
 
@@ -33,9 +63,15 @@ function playGame()
 
   function getComputerChoice()
   {
-    return Choice[(Math.floor(Math.random() * (Choice.length - 1)))]; // -1 so that computer cannot pick trans rights
+    return Choices[(Math.floor(Math.random() * (Choices.length - 1)))]; // -1 so that computer cannot pick trans rights
   }
 
+  function getPlayerChoice(event)
+  {
+    console.log(event.target.id)
+    return;
+  }
+  /* deprecated, from JS-only impl
   function getPlayerChoice()
   {
     let playerChoice = undefined;
@@ -48,7 +84,7 @@ function playGame()
         return false; // let them out
       }; // guard clause against player clicking cancel
       playerInput = playerInput.toLowerCase();
-      playerChoice = Choice.find(obj => obj.name === playerInput) // attempt to lookup 
+      playerChoice = Choices.find(obj => obj.name === playerInput) // attempt to lookup 
       if (playerChoice === undefined && !runOnce) // failed to look up
       {
         query = `Unable to understand player choice: ${playerInput}. Please try again.\n\n${query}`;
@@ -56,7 +92,7 @@ function playGame()
       }
     } while (playerChoice === undefined)
     return playerChoice;
-  }
+  }*/
 
   function determineVictor(playerChoice, computerChoice)
     /* the *only* purpose of this function is to compute a victor. That's it. */
@@ -122,3 +158,5 @@ function playGame()
     alert(message);
   }
 }
+
+playGame();
