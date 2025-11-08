@@ -1,7 +1,60 @@
+/* ugly padding gets the boot*/
 body {
   margin: 0;
+}
+
+* {
+  font-family: Roboto, Verdna, sans-serif;
+  box-sizing: border-box;
+}
+
+/* main flex */
+.main {
+  display: flex;
+  flex-direction: column;
+  background-color: #1E1E1E; /* dark mode! */
+  min-height: 100dvh;
+  padding: 10px 10%; /* slightly space things away from the walls */
+}
+
+.header>.logo {
+  font-size: 24px;
+  color: #F9FAF8;
+}
+
+.game {
+  margin-top: 24px;
+}
+
+#clickable-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* using :has here omits the trans rights EE from this selector, since it's supposed to be an easter egg */
+.clickable:has(.card) {
+  width: 200px;
+  height: 200px;
+  border: 3px solid white;
+  border-radius: 18px;
+}
+
+.card {
+  display: flex;
+  font-size: 100px;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
   display: flex;
   justify-content: center;
-  min-height: 100dvh;
-  align-items: center;
+  margin-top: auto;
+  color: #E5E7EB;
+  & .text {
+    padding: 32px 0px;
+  }
 }
