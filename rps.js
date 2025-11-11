@@ -9,8 +9,10 @@
 */
 function playGame()
 {
-  const Choices = []
+  const Choices = [] // Array that lets me use loops to iterate over choices in the logic for determining who wins.
   class Choice {
+    // Choice class constructor ends up handling everything from game logic to icon creation.
+    // Is this good separation of concerns? No. But also yes! Because it handles everything that is related to choosing.
     constructor(id, icon, friendlyName, flavorText, beats, createIcon = true) {
       this.id = id;
       this.icon = icon;
@@ -30,7 +32,7 @@ function playGame()
         clickableContainer.appendChild(div_outer);
       }
       let clickableTarget = document.querySelector(`#${this.id}`);
-      clickableTarget.addEventListener('click', getPlayerChoice);
+      clickableTarget.addEventListener('click', playRound);
       Choices.push(this);
     }
   }
@@ -39,7 +41,7 @@ function playGame()
   new Choice("paper", "📄", "Paper", "covers", ["rock"]);
   new Choice("scissors", "✂️", "Scissors", "chop up", ["paper"]);
   // secret option
-  new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "", ["rock, paper, scissors"], false);
+  new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "", ["rock", "paper", "scissors"], false);
 
   let playerScore = 0, computerScore = 0;
 
@@ -47,7 +49,7 @@ function playGame()
   /* only let you use the trans rights easter egg once per game */
   {
     for (let i = 0; i < (Choices.length - 1); ++i) {
-      Choices[i].beats.push("trans rights");
+      Choices[i].beats.push("transrights");
     }
     Choices[Choices.length - 1].beats.length = 0;
     return;
@@ -66,45 +68,17 @@ function playGame()
     return Choices[(Math.floor(Math.random() * (Choices.length - 1)))]; // -1 so that computer cannot pick trans rights
   }
 
-  function getPlayerChoice(event)
-  {
-    console.log(event.target.id)
-    return;
-  }
-  /* deprecated, from JS-only impl
-  function getPlayerChoice()
-  {
-    let playerChoice = undefined;
-    let query = "Enter rock, paper, or scissors."
-    let runOnce = false;
-    do {
-      let playerInput = prompt(query);
-      if (playerInput === null) 
-      {
-        return false; // let them out
-      }; // guard clause against player clicking cancel
-      playerInput = playerInput.toLowerCase();
-      playerChoice = Choices.find(obj => obj.name === playerInput) // attempt to lookup 
-      if (playerChoice === undefined && !runOnce) // failed to look up
-      {
-        query = `Unable to understand player choice: ${playerInput}. Please try again.\n\n${query}`;
-        runOnce = true; // don't modify the text multiple times
-      }
-    } while (playerChoice === undefined)
-    return playerChoice;
-  }*/
-
   function determineVictor(playerChoice, computerChoice)
     /* the *only* purpose of this function is to compute a victor. That's it. */
     {
-    if (playerChoice.beats.includes(computerChoice.name))
+    if (playerChoice.beats.includes(computerChoice.id))
     {
-      if (playerChoice.name === "trans rights") {
+      if (playerChoice.id === "transrights") {
         disableTransRightsEE()
       }
       return RoundState.PLAYER_VICTOR;
     }
-    else if (computerChoice.beats.includes(playerChoice.name))
+    else if (computerChoice.beats.includes(playerChoice.id))
     {
       return RoundState.COMPUTER_VICTOR;
     }
@@ -117,17 +91,11 @@ function playGame()
     return message;
   }
 
-  function playRound()
-  /* according to the instructions, I'm supposed to get the player choices outside of this function.
-     no. */
+  function playRound(event)
   {
-    let playerChoice = getPlayerChoice();
-    if (playerChoice === false)
-    {
-      return false;
-    }
-    let computerChoice = getComputerChoice();
-    let scoreDelta = determineVictor(playerChoice, computerChoice);
+    const playerChoice = Choices.find(obj => obj.id === event.target.id);
+    const computerChoice = getComputerChoice();
+    const scoreDelta = determineVictor(playerChoice, computerChoice);
     playerScore += scoreDelta[0];    // avoids using big if-else blocks for playRound (they're in determineVictor instead)
     computerScore += scoreDelta[1]; // this is actually faster than using a loop, w/e
 
@@ -136,7 +104,7 @@ function playGame()
     {
       message += "It's a tie!\n";
     }
-    else if (playerChoice.name === "trans rights") // gotta handle the two states of trans rights in here
+    else if (playerChoice.name === "transrights") // gotta handle the two states of trans rights in here
     {
       if (scoreDelta === RoundState.PLAYER_VICTOR)
       {
@@ -155,7 +123,6 @@ function playGame()
     }
     message = appendScores(message)
     console.log(message);
-    alert(message);
   }
 }
 
