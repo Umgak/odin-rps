@@ -36,14 +36,28 @@ function playGame()
       Choices.push(this);
     }
   }
-
-  new Choice("rock", "🪨", "Rock", "smashes", ["scissors"]);
-  new Choice("paper", "📄", "Paper", "covers", ["rock"]);
-  new Choice("scissors", "✂️", "Scissors", "chop up", ["paper"]);
-  // secret option
-  new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "", ["rock", "paper", "scissors"], false);
-
   let playerScore = 0, computerScore = 0;
+
+  function init()
+  // called on first startup and any time the player re-starts the game
+  {
+    Choices.length = 0; // wipe out old choices
+    const clickableContainer = document.querySelector("#clickable-container");
+    while (clickableContainer.firstChild)
+    {
+      clickableContainer.firstChild.removeEventListener("click"); // every event listener consumes memory. remove them.
+      clickableContainer.removeChild(clickableContainer.firstChild);
+    }
+    // setup new game
+    new Choice("rock", "🪨", "Rock", "smashes", ["scissors"]);
+    new Choice("paper", "📄", "Paper", "covers", ["rock"]);
+    new Choice("scissors", "✂️", "Scissors", "chop up", ["paper"]);
+    // secret option
+    new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "", ["rock", "paper", "scissors"], false);
+    // reset scoring
+    playerScore = 0;
+    computerScore = 0;
+  }
 
   function disableTransRightsEE()
   /* only let you use the trans rights easter egg once per game */
@@ -124,6 +138,7 @@ function playGame()
     message = appendScores(message)
     console.log(message);
   }
+  init();
 }
 
 playGame();
