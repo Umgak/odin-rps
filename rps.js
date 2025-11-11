@@ -36,8 +36,40 @@ function playGame()
       Choices.push(this);
     }
   }
-  let playerScore = 0, computerScore = 0;
 
+  class Score {
+    #playerScore = 0;
+    #computerScore = 0;
+    #playerScoreDisplay = document.querySelector("#playerscore");
+    #computerScoreDisplay = document.querySelector("#computerscore");
+
+    get getScores () {
+      return [this.#playerScore, this.#computerScore]
+    }
+
+    resetScore()
+    {
+      this.#playerScore = 0;
+      this.#computerScore = 0;
+      this.#updateScoreDisplay();
+    }
+
+    addScore(RoundState)
+    {
+      this.#playerScore += RoundState[0];
+      this.#computerScore += RoundState[1];
+      this.#updateScoreDisplay();
+    }
+
+    #updateScoreDisplay()
+    {
+      this.#playerScoreDisplay.innerHTML = `Player Score: ${this.#playerScore}`;
+      this.#computerScoreDisplay.innerHTML = `Computer Score: ${this.#computerScore}`
+      return;
+    }
+  };
+
+  let Scores = new Score;
   function init()
   // called on first startup and any time the player re-starts the game
   {
@@ -55,8 +87,7 @@ function playGame()
     // secret option
     new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "", ["rock", "paper", "scissors"], false);
     // reset scoring
-    playerScore = 0;
-    computerScore = 0;
+    Scores.resetScore();
   }
 
   function disableTransRightsEE()
@@ -101,7 +132,7 @@ function playGame()
 
   function appendScores(message)
   {
-    message += `\nPlayer score: ${playerScore}\nComputer score: ${computerScore}`
+    message += `\nPlayer score: ${Score.getScores()[0]}\nComputer score: ${Score.getScores()[1]}`
     return message;
   }
 
@@ -110,9 +141,7 @@ function playGame()
     const playerChoice = Choices.find(obj => obj.id === event.target.id);
     const computerChoice = getComputerChoice();
     const scoreDelta = determineVictor(playerChoice, computerChoice);
-    playerScore += scoreDelta[0];    // avoids using big if-else blocks for playRound (they're in determineVictor instead)
-    computerScore += scoreDelta[1]; // this is actually faster than using a loop, w/e
-
+    Scores.addScore(scoreDelta);
     let message = `You threw: ${playerChoice.friendlyName}\nI threw: ${computerChoice.friendlyName}\n`;
     if (scoreDelta === RoundState.NO_VICTOR)
     {
