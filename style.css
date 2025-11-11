@@ -23,13 +23,28 @@ body {
 }
 
 .game {
+  display: flex;
+  flex-direction: column;
   margin-top: 24px;
+  & .title,
+  .promptchoice {
+    align-self: center;
+    color: #E5E7EB;
+  }
+  & .title {
+    font-size: 20px;
+  }
+  & .promptchoice {
+    font-size: 18px;
+  }
 }
+
 
 #clickable-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 24px;
 }
 
 /* using :has here omits the trans rights EE from this selector, since it's supposed to be an easter egg */
