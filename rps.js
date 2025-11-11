@@ -43,10 +43,6 @@ function playGame()
     #playerScoreDisplay = document.querySelector("#playerscore");
     #computerScoreDisplay = document.querySelector("#computerscore");
 
-    get getScores () {
-      return [this.#playerScore, this.#computerScore]
-    }
-
     resetScore()
     {
       this.#playerScore = 0;
@@ -137,30 +133,33 @@ function playGame()
     const computerChoice = getComputerChoice();
     const scoreDelta = determineVictor(playerChoice, computerChoice);
     Scores.addScore(scoreDelta);
-    let message = `You threw: ${playerChoice.friendlyName}\nI threw: ${computerChoice.friendlyName}\n`;
+    let message = `You threw: ${playerChoice.friendlyName}<br>I threw: ${computerChoice.friendlyName}<br>`;
     if (scoreDelta === RoundState.NO_VICTOR)
     {
-      message += "It's a tie!\n";
+      message += "It's a tie!<br>";
     }
-    else if (playerChoice.name === "transrights") // gotta handle the two states of trans rights in here
+    else if (playerChoice.id === "transrights") // gotta handle the two states of trans rights in here
     {
       if (scoreDelta === RoundState.PLAYER_VICTOR)
       {
-        message += "Hey, that's not one of the options! But it is true...\nI'll give you this round, but I won't be so gentle in the future.\n";
+        message += "Hey, that's not one of the options! But it is true...<br>I'll give you this round, but I won't be so gentle in the future.<br>";
       }
       else
       {
-        message += "I told you I wouldn't be so gentle in the future.\nI'm taking this round!\n";
+        message += "I told you I wouldn't be so gentle in the future.<br>I'm taking this round!<br>";
       }
     }
     else
     {
       message += ((scoreDelta === RoundState.PLAYER_VICTOR) ? 
-        `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!\nYou win this round!\n` : 
-        `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!\nI win this round!\n`)
+        `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!<br>You win this round!<br>` : 
+        `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!<br>I win this round!<br>`)
     }
+    const roundStatusDisplay = document.querySelector(".roundstatus");
+    roundStatusDisplay.innerHTML = message;
     console.log(message);
   }
+  
   init();
 
   // TEST DATA
