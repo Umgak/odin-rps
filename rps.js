@@ -70,6 +70,7 @@ function playGame()
   };
 
   let Scores = new Score;
+
   function init()
   // called on first startup and any time the player re-starts the game
   {
@@ -77,7 +78,7 @@ function playGame()
     const clickableContainer = document.querySelector("#clickable-container");
     while (clickableContainer.firstChild)
     {
-      clickableContainer.firstChild.removeEventListener("click"); // every event listener consumes memory. remove them.
+      clickableContainer.firstChild.removeEventListener("click", playRound); // every event listener consumes memory. remove them.
       clickableContainer.removeChild(clickableContainer.firstChild);
     }
     // setup new game
@@ -130,12 +131,6 @@ function playGame()
     return RoundState.NO_VICTOR;
   }
 
-  function appendScores(message)
-  {
-    message += `\nPlayer score: ${Score.getScores()[0]}\nComputer score: ${Score.getScores()[1]}`
-    return message;
-  }
-
   function playRound(event)
   {
     const playerChoice = Choices.find(obj => obj.id === event.target.id);
@@ -164,10 +159,13 @@ function playGame()
         `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!\nYou win this round!\n` : 
         `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!\nI win this round!\n`)
     }
-    message = appendScores(message)
     console.log(message);
   }
   init();
+
+  // TEST DATA
+  let reset = document.querySelector("#computerscore");
+  reset.addEventListener("click", init);
 }
 
 playGame();

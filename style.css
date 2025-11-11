@@ -26,15 +26,24 @@ body {
   display: flex;
   flex-direction: column;
   margin-top: 24px;
+  color: #E5E7EB;
   & .title,
   .promptchoice {
     align-self: center;
-    color: #E5E7EB;
   }
   & .title {
     font-size: 20px;
   }
   & .promptchoice {
+    font-size: 18px;
+  }
+  & .scores {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0 auto;
+    gap: 20dvw;
+    margin-top: 10px;
     font-size: 18px;
   }
 }
@@ -43,7 +52,9 @@ body {
 #clickable-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin: 0 auto;
+  gap: 5dvw;
   margin-top: 24px;
 }
 
