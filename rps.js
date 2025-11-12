@@ -55,6 +55,12 @@ function playGame()
       this.#playerScore += RoundState[0];
       this.#computerScore += RoundState[1];
       this.#updateScoreDisplay();
+      if (this.#playerScore === 5 || this.#computerScore === 5)
+      {
+        gameOver = true;
+        gameOverButton.classList.toggle("disabled");        
+      }
+
     }
 
     #updateScoreDisplay()
@@ -72,6 +78,9 @@ function playGame()
   const roundStatusDisplayRight = document.querySelector(".roundstatusright");
   const roundStatusDisplayBottom = document.querySelector(".roundstatusbottom");
 
+  let gameOver = false;
+  const gameOverButton = document.querySelector("#gameoverbutton");
+
   function init()
   // called on first startup
   {
@@ -85,6 +94,8 @@ function playGame()
 
     // Reset scores (so the score display appears)
     Scores.resetScore();
+
+    gameOverButton.addEventListener("click", cleanup);
   }
 
   function cleanup()
@@ -99,6 +110,10 @@ function playGame()
 
     // gotta put the easter egg back!
     enableTransRightsEE();
+
+    // Un-gameover
+    gameOver = false;
+    gameOverButton.classList.toggle("disabled");
   }
 
   function disableTransRightsEE()
@@ -114,18 +129,17 @@ function playGame()
   function enableTransRightsEE(isInitialSetup = false)
   /* re-enable the trans rights EE, since it doesn't fall out of scope now */
   {
-    for (obj of Choices)
+    for (let i = 0; i < (Choices.length - 1); ++i)
     {
-      if (obj.beats.includes("transrights") || isInitialSetup)
+      if (Choices[i].beats.includes("transrights") || isInitialSetup)
       {
-        Choices[Choices.length - 1].beats.push(obj.id);
+        Choices[Choices.length - 1].beats.push(Choices[i].id);
       }
-      if (obj.beats.includes("transrights")) // was disabled
+      if (Choices[i].beats.includes("transrights")) // was disabled
       {
-        obj.beats.length -= 1;
+        Choices[i].beats.length -= 1;
       }
     }
-
   }
 
   const RoundState = Object.freeze({
@@ -160,6 +174,7 @@ function playGame()
 
   function playRound(event)
   {
+    if (gameOver) return;
     const playerChoice = Choices.find(obj => obj.id === event.target.id);
     const computerChoice = getComputerChoice();
     const scoreDelta = determineVictor(playerChoice, computerChoice);

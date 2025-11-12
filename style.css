@@ -91,6 +91,22 @@ body {
   align-items: center;
 }
 
+#gameoverbutton {
+  width: fit-content;
+  background-color: #3882F6;
+  color: white;
+  padding: 8px 30px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  align-self: center;
+}
+
+.disabled {
+  display: none;
+}
+
 .footer {
   display: flex;
   justify-content: center;
