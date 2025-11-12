@@ -46,8 +46,24 @@ body {
     margin-top: 10px;
     font-size: 18px;
   }
+  & .roundstatus {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  & .roundstatustop
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0 auto;
+    gap: 20dvw;
+    margin-top: 10px;
+  }
+  & .roundstatusbottom {
+    text-align: center;
+  }
 }
-
 
 #clickable-container {
   display: flex;

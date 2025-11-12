@@ -67,6 +67,11 @@ function playGame()
 
   let Scores = new Score;
 
+  /* you have no idea how tempting it is to make this another class/part of the Score class*/
+  const roundStatusDisplayLeft = document.querySelector(".roundstatusleft");
+  const roundStatusDisplayRight = document.querySelector(".roundstatusright");
+  const roundStatusDisplayBottom = document.querySelector(".roundstatusbottom");
+
   function init()
   // called on first startup and any time the player re-starts the game
   {
@@ -77,12 +82,15 @@ function playGame()
       clickableContainer.firstChild.removeEventListener("click", playRound); // every event listener consumes memory. remove them.
       clickableContainer.removeChild(clickableContainer.firstChild);
     }
+    roundStatusDisplayLeft.innerHTML = "";
+    roundStatusDisplayRight.innerHTML = "";
+    roundStatusDisplayBottom.innerHTML = "";
     // setup new game
     new Choice("rock", "🪨", "Rock", "smashes", ["scissors"]);
     new Choice("paper", "📄", "Paper", "covers", ["rock"]);
     new Choice("scissors", "✂️", "Scissors", "chop up", ["paper"]);
     // secret option
-    new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "", ["rock", "paper", "scissors"], false);
+    new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "If you're reading this, I messed up!", ["rock", "paper", "scissors"], false);
     // reset scoring
     Scores.resetScore();
   }
@@ -133,31 +141,29 @@ function playGame()
     const computerChoice = getComputerChoice();
     const scoreDelta = determineVictor(playerChoice, computerChoice);
     Scores.addScore(scoreDelta);
-    let message = `You threw: ${playerChoice.friendlyName}<br>I threw: ${computerChoice.friendlyName}<br>`;
+    roundStatusDisplayLeft.innerHTML = `You threw: ${playerChoice.friendlyName}`
+    roundStatusDisplayRight.innerHTML = `I threw: ${computerChoice.friendlyName}`;
     if (scoreDelta === RoundState.NO_VICTOR)
     {
-      message += "It's a tie!<br>";
+      roundStatusDisplayBottom.innerHTML = "It's a tie!";
     }
     else if (playerChoice.id === "transrights") // gotta handle the two states of trans rights in here
     {
       if (scoreDelta === RoundState.PLAYER_VICTOR)
       {
-        message += "Hey, that's not one of the options! But it is true...<br>I'll give you this round, but I won't be so gentle in the future.<br>";
+        roundStatusDisplayBottom.innerHTML = "Hey, that's not one of the options! But it is true...<br>I'll give you this round, but I won't be so gentle in the future.<br>";
       }
       else
       {
-        message += "I told you I wouldn't be so gentle in the future.<br>I'm taking this round!<br>";
+        roundStatusDisplayBottom.innerHTML = "I told you I wouldn't be so gentle in the future.<br>I'm taking this round!<br>";
       }
     }
     else
     {
-      message += ((scoreDelta === RoundState.PLAYER_VICTOR) ? 
+      roundStatusDisplayBottom.innerHTML = ((scoreDelta === RoundState.PLAYER_VICTOR) ? 
         `Your ${playerChoice.friendlyName} ${playerChoice.flavorText} my ${computerChoice.friendlyName}!<br>You win this round!<br>` : 
         `My ${computerChoice.friendlyName} ${computerChoice.flavorText} your ${playerChoice.friendlyName}!<br>I win this round!<br>`)
     }
-    const roundStatusDisplay = document.querySelector(".roundstatus");
-    roundStatusDisplay.innerHTML = message;
-    console.log(message);
   }
   
   init();
