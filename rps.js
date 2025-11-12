@@ -73,26 +73,32 @@ function playGame()
   const roundStatusDisplayBottom = document.querySelector(".roundstatusbottom");
 
   function init()
-  // called on first startup and any time the player re-starts the game
+  // called on first startup
   {
-    Choices.length = 0; // wipe out old choices
-    const clickableContainer = document.querySelector("#clickable-container");
-    while (clickableContainer.firstChild)
-    {
-      clickableContainer.firstChild.removeEventListener("click", playRound); // every event listener consumes memory. remove them.
-      clickableContainer.removeChild(clickableContainer.firstChild);
-    }
-    roundStatusDisplayLeft.innerHTML = "";
-    roundStatusDisplayRight.innerHTML = "";
-    roundStatusDisplayBottom.innerHTML = "";
     // setup new game
     new Choice("rock", "🪨", "Rock", "smashes", ["scissors"]);
     new Choice("paper", "📄", "Paper", "covers", ["rock"]);
     new Choice("scissors", "✂️", "Scissors", "chop up", ["paper"]);
     // secret option
-    new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "If you're reading this, I messed up!", ["rock", "paper", "scissors"], false);
+    new Choice("transrights", "🏳️‍⚧️", "Trans Rights", "If you're reading this, I messed up!", [], false);
+    enableTransRightsEE(true);
+
+    // Reset scores (so the score display appears)
+    Scores.resetScore();
+  }
+
+  function cleanup()
+  {
     // reset scoring
     Scores.resetScore();
+
+    // cleanup text
+    roundStatusDisplayLeft.innerHTML = "";
+    roundStatusDisplayRight.innerHTML = "";
+    roundStatusDisplayBottom.innerHTML = "";
+
+    // gotta put the easter egg back!
+    enableTransRightsEE();
   }
 
   function disableTransRightsEE()
@@ -103,6 +109,23 @@ function playGame()
     }
     Choices[Choices.length - 1].beats.length = 0;
     return;
+  }
+
+  function enableTransRightsEE(isInitialSetup = false)
+  /* re-enable the trans rights EE, since it doesn't fall out of scope now */
+  {
+    for (obj of Choices)
+    {
+      if (obj.beats.includes("transrights") || isInitialSetup)
+      {
+        Choices[Choices.length - 1].beats.push(obj.id);
+      }
+      if (obj.beats.includes("transrights")) // was disabled
+      {
+        obj.beats.length -= 1;
+      }
+    }
+
   }
 
   const RoundState = Object.freeze({
@@ -170,7 +193,7 @@ function playGame()
 
   // TEST DATA
   let reset = document.querySelector("#computerscore");
-  reset.addEventListener("click", init);
+  reset.addEventListener("click", cleanup);
 }
 
 playGame();
