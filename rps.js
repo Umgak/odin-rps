@@ -59,6 +59,7 @@ function playGame()
       {
         gameOver = true;
         gameOverButton.classList.toggle("disabled");        
+        roundStatusDisplayBottom.innerHTML += "<br>GAME OVER";
       }
 
     }
@@ -205,10 +206,6 @@ function playGame()
   }
   
   init();
-
-  // TEST DATA
-  let reset = document.querySelector("#computerscore");
-  reset.addEventListener("click", cleanup);
 }
 
 playGame();
